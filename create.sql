@@ -44,5 +44,5 @@ CREATE TABLE IF NOT EXISTS Users (
     Rating INTEGER DEFAULT 0,
     Location text DEFAULT NULL,
     Country_Code INTEGER DEFAULT NULL
-)
+);
 
