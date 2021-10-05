@@ -45,6 +45,9 @@ MONTHS = {
     "Dec": "12",
 }
 
+money_keys = ['Buy_Price', 'Currently', 'First_Bid']
+date_keys = ['Started', 'Ends']
+
 
 def isJson(f):
     """
@@ -83,8 +86,6 @@ def transformDollar(money):
     return sub(r"[^\d.]", "", money)
 
 
-
-
 def parseJson(json_file):
     """
     Parses a single json file. Currently, there's a loop that iterates over each
@@ -95,15 +96,37 @@ def parseJson(json_file):
         items = loads(f.read())[
             "Items"
         ]  # creates a Python dictionary of Items for the supplied json file
-        for item in items:
-            """
-            TODO: traverse the items dictionary to extract information from the
-            given `json_file' and generate the necessary .dat files to generate
-            the SQL tables based on your relation design
-            """
-            pass
+        
+        # Open all data files
+        with (
+            open("data/items.dat", "w") as item_file,
+            open("data/category.dat", "w") as category,
+            open("data/item_bids.dat", "w") as item_bids,
+            open("data/bids.dat", "w") as bids,
+            open("data/users.dat", "w") as users,
+        ):
+            for item in items:
+                ID = item["ItemID"]
+                
+                # looping through each item attributes
+                #TODO need a function to format all string values, will make life a lot easier
+                for key in item.keys():
+                    if key == "Name": 
+                        insert = f"\"{item[key]}\""
+                    elif key in money_keys:
+                        insert = transformDollar(item[key])
+                    elif key in date_keys:
+                        insert = transformDttm(item[key])
+                    elif key == 'Category':
+                        for c in item[key]:
+                            category.write(f"{ID}|\"{c}\"\n")
+                    else:
+                        insert = f"\"{item[key]}\""
+                        
+                    item_file.write(f"{insert}|")
 
-
+                item_file.write("\n")
+                
 
 
 def main(argv):
