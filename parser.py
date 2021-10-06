@@ -101,7 +101,6 @@ def parseJson(json_file):
         with (
             open("data/items.dat", "w") as item_file,
             open("data/category.dat", "w") as category,
-            open("data/item_bids.dat", "w") as item_bids,
             open("data/bids.dat", "w") as bids,
             open("data/users.dat", "w") as users,
         ):
@@ -110,8 +109,15 @@ def parseJson(json_file):
                 
                 # looping through each item attributes
                 #TODO need a function to format all string values, will make life a lot easier
+                # add a quote in front of all instances of quotes in a string
+                
+                #TODO Check if None, turn into "NULL"
+                
+                #TODO if bids is empty, num of bids = NULL
                 for key in item.keys():
-                    if key == "Name": 
+                    if key == "ItemID":
+                        insert = item[key]
+                    elif key == "Name": 
                         insert = f"\"{item[key]}\""
                     elif key in money_keys:
                         insert = transformDollar(item[key])
