@@ -22,11 +22,10 @@ the main function. We create the initial Python dictionary object of items for
 you; the rest is up to you!
 Happy parsing!
 """
-
 import sys
 from json import loads
 from re import sub
-
+import re
 columnSeparator = "|"
 
 # Dictionary of months used for date transformation
@@ -86,6 +85,18 @@ def transformDollar(money):
     return sub(r"[^\d.]", "", money)
 
 
+def check_strings(word):
+    """
+    Parses through the strings to check if there are any quotes, 
+    and add anotehr quote after
+    """ 
+    check = ""
+    if check in word:
+        quote = re.findall(r'"(.*?)"', word)
+        #add first extra quote
+        word.index(quote)
+        #add second extra quote 
+
 def parseJson(json_file):
     """
     Parses a single json file. Currently, there's a loop that iterates over each
@@ -104,9 +115,10 @@ def parseJson(json_file):
             open("data/bids.dat", "w") as bids,
             open("data/users.dat", "w") as users,
         ):
+
+            times1 = ""
             for item in items:
                 ID = item["ItemID"]
-                
                 # looping through each item attributes
                 #TODO need a function to format all string values, will make life a lot easier
                 # add a quote in front of all instances of quotes in a string
@@ -114,9 +126,15 @@ def parseJson(json_file):
                 #TODO Check if None, turn into "NULL"
                 
                 #TODO if bids is empty, num of bids = NULL
+
                 for key in item.keys():
+                    bids_bool = False
+                    bids_bool_id = False
+                    if item[key] == 'null':
+                        item[key] = "NULL"
                     if key == "ItemID":
                         insert = item[key]
+                        bids_bool = True
                     elif key == "Name": 
                         insert = f"\"{item[key]}\""
                     elif key in money_keys:
@@ -126,14 +144,25 @@ def parseJson(json_file):
                     elif key == 'Category':
                         for c in item[key]:
                             category.write(f"{ID}|\"{c}\"\n")
+                    if key == 'Bids':
+                        if item[key] == None:   
+                            times1 = "" 
+                            insert =  ""
+                            bids_bool_id = True 
+                        elif item[key] != None:
+                            for b in item[key]:
+                                    bids.write(f"{ID}|")
+                                    bids.write(f"{b['Bid']['Bidder']['UserID']}|")
+                                    bids.write(f"{b['Bid']['Time']}|")
+                                    bids.write(f"{b['Bid']['Amount']}|""\n")
+                      
                     else:
                         insert = f"\"{item[key]}\""
                         
                     item_file.write(f"{insert}|")
-
+                    
                 item_file.write("\n")
-                
-
+               
 
 def main(argv):
     """
@@ -141,7 +170,7 @@ def main(argv):
     to the parser
     """
     if len(argv) < 2:
-        print >>sys.stderr, "Usage: python skeleton_json_parser.py <path to json files>"
+        "print(<Usage: python skeleton_json_parser.py <path to json files>>, sys.stderr)" 
         sys.exit(1)
     # loops over all .json files in the argument
     for f in argv[1:]:
