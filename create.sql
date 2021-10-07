@@ -14,28 +14,23 @@ CREATE TABLE IF NOT EXISTS Item (
     Country VARCHAR(32) DEFAULT NULL,
     Started VARCHAR(32) DEFAULT NULL,
     Ends VARCHAR(32) DEFAULT NULL,
-    Seller_ID INTEGER DEFAULT NULL,
+    Seller_ID INTEGER DEFAULT 0,
     Description text DEFAULT NULL,
     FOREIGN KEY (Seller_ID) REFERENCES Users(ID)   
 );
 
 CREATE TABLE IF NOT EXISTS Bid (
-    ID INTEGER primary key autoincrement,
+    Item_ID INTEGER primary key autoincrement,
     Bidder_ID INTEGER DEFAULT 0,
     Time VARCHAR(32) DEFAULT NULL,
     Amount VARCHAR(32) DEFAULT NULL,
     FOREIGN KEY (Bidder_ID) REFERENCES Users(ID)
 );
 
-CREATE TABLE IF NOT EXISTS Item_Bid (
-    Item_ID  INTEGER DEFAULT 0,
-    Bid_ID INTEGER DEFAULT 0,
-    PRIMARY KEY (Item_ID,Bid_ID) 
-);
-
 CREATE TABLE IF NOT EXISTS Category (
     Item_ID INTEGER,
-    Category_Name text DEFAULT NULL,
+    Category_Name VARCHAR(32) DEFAULT NULL,
+    PRIMARY KEY (Item_ID, Category_Name),
     FOREIGN KEY (Item_ID) REFERENCES Item(ID)
 );
 
