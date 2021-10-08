@@ -46,6 +46,7 @@ MONTHS = {
 
 money_keys = ['Buy_Price', 'Currently', 'First_Bid']
 date_keys = ['Started', 'Ends']
+string_key = ['Name', 'Location', 'Country', 'Description']
 
 
 def isJson(f):
@@ -97,6 +98,16 @@ def check_strings(word):
         word.index(quote)
         #add second extra quote 
 
+def formatStr(s):
+    """Function to add a quote before each single quote """
+    temp = ''
+    for i, c in enumerate(s):
+        if c == '"':
+            temp += '"'
+        temp += c
+    return temp
+    
+
 def parseJson(json_file):
     """
     Parses a single json file. Currently, there's a loop that iterates over each
@@ -126,40 +137,69 @@ def parseJson(json_file):
                 #TODO Check if None, turn into "NULL"
                 
                 #TODO if bids is empty, num of bids = NULL
+                
+                #TODO must cycle through a predetemined list of keys,
+                # since some keys dont exist 
+                item_file.write(f"\n")
 
                 for key in item.keys():
-                    bids_bool = False
-                    bids_bool_id = False
+                    item_file.write(f"{key}|")
+                    
+                    
+                item_file.write(f"\n")
+
+                
+                for key in item.keys():
+                    # Handling empty 
+                    insert = 'what'
                     if item[key] == 'null':
                         item[key] = "NULL"
+                        
+                    # Handling each key of the item data
                     if key == "ItemID":
                         insert = item[key]
-                        bids_bool = True
-                    elif key == "Name": 
-                        insert = f"\"{item[key]}\""
+                        
+                    # Format values that might be strings to handle quotes
+                    elif key in string_key: 
+                        insert = f"\"{formatStr(item[key])}\""
+                        
+                    # Format values that are dollar amounts, turns into flaots
                     elif key in money_keys:
                         insert = transformDollar(item[key])
+                        
+                    # Formats data values into ISO format
                     elif key in date_keys:
                         insert = transformDttm(item[key])
+                    
+                    # Handles category table
                     elif key == 'Category':
                         for c in item[key]:
                             category.write(f"{ID}|\"{c}\"\n")
-                    if key == 'Bids':
-                        if item[key] == None:   
-                            times1 = "" 
-                            insert =  ""
-                            bids_bool_id = True 
-                        elif item[key] != None:
-                            for b in item[key]:
-                                    bids.write(f"{ID}|")
-                                    bids.write(f"{b['Bid']['Bidder']['UserID']}|")
-                                    bids.write(f"{b['Bid']['Time']}|")
-                                    bids.write(f"{b['Bid']['Amount']}|""\n")
+                        continue
+                            
+                    # Handles Bids table
+                    elif key == "Number_of_Bids":
+                        num_bids = int(item[key])
+                        insert = num_bids
+                        
+                        if num_bids != 0:
+                        # If the item has bids
+                            for b in item['Bids']:
+                                bids.write(f"{ID}|")
+                                bids.write(f"{b['Bid']['Bidder']['UserID']}|")
+                                bids.write(f"{b['Bid']['Time']}|")
+                                bids.write(f"{b['Bid']['Amount']}|""\n")
+                    
+                    elif key == 'Bids':
+                        # bids handled in num_bids
+                        continue            
+                        
                       
                     else:
+                        print(key)
                         insert = f"\"{item[key]}\""
-                        
-                    item_file.write(f"{insert}|")
+                       
+                    item_file.write(f"{key}: {insert}| ")
                     
                 item_file.write("\n")
                
