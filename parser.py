@@ -121,10 +121,10 @@ def parseJson(json_file):
         
         # Open all data files
         with (
-            open("data/items.dat", "w") as item_file,
-            open("data/category.dat", "w") as category_file,
-            open("data/bids.dat", "w") as bid_file,
-            open("data/users.dat", "w") as user_file,
+            open("data/items.dat", "a") as item_file,
+            open("data/category.dat", "a") as category_file,
+            open("data/bids.dat", "a") as bid_file,
+            open("data/users.dat", "a") as user_file,
         ):
 
             times1 = ""
