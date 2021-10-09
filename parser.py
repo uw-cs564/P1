@@ -172,12 +172,12 @@ def parseJson(json_file):
                     item_file.write(f"{item['Number_of_Bids']}|")
                     
                 if 'Started' not in item or item['Started'] is None:
-                    item_file.write('NULL')
+                    item_file.write('NULL|')
                 else:
                     item_file.write(f"{transformDttm(item['Started'])}|")
                     
                 if 'Ends' not in item or item['Ends'] is None:
-                    item_file.write('NULL')
+                    item_file.write('NULL|')
                 else:
                     item_file.write(f"{transformDttm(item['Ends'])}|")
                     
@@ -203,13 +203,13 @@ def parseJson(json_file):
                         bid_file.write(f"{ID}|")
                         
                         if 'UserID' not in bidder or bidder['UserID'] is None:
-                            bid_file.write("NULL")
+                            bid_file.write("NULL|")
                         else:
                             bid_file.write(f"\"{formatStr(bidder['UserID'])}\"|")
                             user_file.write(f"\"{formatStr(bidder['UserID'])}\"|")
                             
                         if 'Time' not in bid or bid['Time'] is None:
-                            bid_file.write("NULL")
+                            bid_file.write("NULL|")
                         else:
                             bid_file.write(f"{transformDttm(bid['Time'])}|")
                             
@@ -221,12 +221,12 @@ def parseJson(json_file):
                             
                         ## User table, Bidder
                         if 'Rating' not in bidder or bidder['Rating'] is None:
-                            user_file.write("NULL")
+                            user_file.write("NULL|")
                         else:
                             user_file.write(f"{bidder['Rating']}|")
                             
                         if 'Location' not in bidder or bidder['Location'] is None:
-                            user_file.write("NULL")
+                            user_file.write("NULL|")
                         else:
                             user_file.write(f"\"{formatStr(bidder['Location'])}\"|")
                             
@@ -242,12 +242,12 @@ def parseJson(json_file):
                 user_file.write(f"\"{formatStr(sellerID)}\"|")
                 
                 if 'Rating' not in seller or seller['Rating'] is None:
-                    user_file.write("NULL")
+                    user_file.write("NULL|")
                 else:
                     user_file.write(f"{seller['Rating']}|")
                 
                 if 'Location' not in item or item['Location'] is None:
-                    user_file.write("NULL")
+                    user_file.write("NULL|")
                 else:
                     user_file.write(f"\"{formatStr(item['Location'])}\"|")
                     
