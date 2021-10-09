@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS Category;
 DROP TABLE IF EXISTS Users;
 
 CREATE TABLE IF NOT EXISTS Item (
-    ID INTEGER primary key autoincrement,
+    ItemID INTEGER primary key,
     Name VARCHAR(32) DEFAULT NULL,
     Currently INTEGER DEFAULT 0,
     First_Bid INTEGER DEFAULT 0,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Item (
 );
 
 CREATE TABLE IF NOT EXISTS Bid (
-    Item_ID INTEGER primary key autoincrement,
+    Item_ID INTEGER primary key,
     Bidder_ID INTEGER DEFAULT 0,
     DATETIME VARCHAR(32) DEFAULT NULL,
     Amount VARCHAR(32) DEFAULT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS Category (
 );
 
 CREATE TABLE IF NOT EXISTS Users (
-    ID INTEGER primary key autoincrement,
+    UserID VARCHAR(32) primary key DEFAULT NULL,
     Rating INTEGER DEFAULT 0,
     Location text DEFAULT NULL,
     Country_Code INTEGER DEFAULT NULL
