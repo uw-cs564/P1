@@ -122,9 +122,9 @@ def parseJson(json_file):
         # Open all data files
         with (
             open("data/items.dat", "w") as item_file,
-            open("data/category.dat", "w") as category,
-            open("data/bids.dat", "w") as bids,
-            open("data/users.dat", "w") as users,
+            open("data/category.dat", "w") as category_file,
+            open("data/bids.dat", "w") as bid_file,
+            open("data/users.dat", "w") as user_file,
         ):
 
             times1 = ""
@@ -133,6 +133,8 @@ def parseJson(json_file):
                 seller = item["Seller"]
                 sellerID = seller["UserID"]
                 bids = item["Bids"]
+                category = item['Category'] # array of categories
+                
                 # looping through each item attributes
                 #TODO need a function to format all string values, will make life a lot easier
                 # add a quote in front of all instances of quotes in a string
@@ -143,51 +145,131 @@ def parseJson(json_file):
                 
                 #TODO must cycle through a predetemined list of keys,
                 # since some keys dont exist 
-                item_file.write(f"\n")
 
-                if item['ItemID'] is None:
+                if ID is None:
                     item_file.write('NULL|')
                 else:
-                    item_file.write(f"{item['ItemID']}|")
+                    item_file.write(f"{ID}|")
 
-                if item['Name'] is None:
+                if 'Name' not in item or item['Name'] is None:
                     item_file.write('NULL|')
                 else:
                     item_file.write(f"\"{formatStr(item['Name'])}\"|")
                    
-                if item['Currently'] is None:
+                if 'Currently' not in item or item['Currently'] is None:
                     item_file.write('NULL')
                 else:
                     item_file.write(f"{transformDollar(item['Currently'])}|")
                     
-                if item['First_Bid'] is None:
+                if 'First_Bid' not in item or item['First_Bid'] is None:
                     item_file.write('NULL')
                 else:
                     item_file.write(f"{transformDollar(item['First_Bid'])}|")
                    
-                if item['Number_of_Bids'] is None:
+                if 'Number_of_Bids' not in item or item['Number_of_Bids'] is None:
                     item_file.write('NULL')
                 else:
                     item_file.write(f"{item['Number_of_Bids']}|")
                     
-                if item['Started'] is None:
+                if 'Started' not in item or item['Started'] is None:
                     item_file.write('NULL')
                 else:
                     item_file.write(f"{transformDttm(item['Started'])}|")
                     
-                if item['Ends'] is None:
+                if 'Ends' not in item or item['Ends'] is None:
                     item_file.write('NULL')
                 else:
                     item_file.write(f"{transformDttm(item['Ends'])}|")
                     
-                item_file.write(f"\"{sellerID}\"|")
+                item_file.write(f"\"{formatStr(sellerID)}\"|")
                     
-                if item['Description'] is None:
+                if 'Description' not in item or item['Description'] is None:
                     item_file.write('NULL')
                 else:
-                    item_file.write(f"\"{formatStr(item['Description'])}\"|")
+                    item_file.write(f"\"{formatStr(item['Description'])}\"")
                 
                 item_file.write("\n")
+
+
+                ## For BIDS table
+                if item['Bids'] is not None:
+                    bids = item['Bids']
+                    
+                    # For ecah palced Bid/Row in bid table
+                    for b in bids:
+                        bid = b['Bid']
+                        bidder = bid['Bidder']
+                        
+                        bid_file.write(f"{ID}|")
+                        
+                        if 'UserID' not in bidder or bidder['UserID'] is None:
+                            bid_file.write("NULL")
+                        else:
+                            bid_file.write(f"\"{formatStr(bidder['UserID'])}\"|")
+                            user_file.write(f"\"{formatStr(bidder['UserID'])}\"|")
+                            
+                        if 'Time' not in bid or bid['Time'] is None:
+                            bid_file.write("NULL")
+                        else:
+                            bid_file.write(f"{transformDttm(bid['Time'])}|")
+                            
+                        if 'Amount' not in bid or bid['Amount'] is None:
+                            bid_file.write("NULL")
+                        else:
+                            bid_file.write(f"{transformDollar(bid['Amount'])}")
+                            
+                            
+                        ## User table, Bidder
+                        if 'Rating' not in bidder or bidder['Rating'] is None:
+                            user_file.write("NULL")
+                        else:
+                            user_file.write(f"{bidder['Rating']}|")
+                            
+                        if 'Location' not in bidder or bidder['Location'] is None:
+                            user_file.write("NULL")
+                        else:
+                            user_file.write(f"\"{bidder['Location']}\"|")
+                            
+                        if 'Country' not in bidder or bidder['Country'] is None:
+                            user_file.write("NULL")
+                        else:
+                            user_file.write(f"\"{bidder['Country']}\"")
+                            
+                        bid_file.write('\n')
+                        user_file.write('\n')
+                        
+                ## For User table, sellers
+                user_file.write(f"\"{formatStr(sellerID)}\"|")
+                
+                if 'Rating' not in seller or seller['Rating'] is None:
+                    user_file.write("NULL")
+                else:
+                    user_file.write(f"{seller['Rating']}|")
+                
+                if 'Location' not in item or item['Location'] is None:
+                    user_file.write("NULL")
+                else:
+                    user_file.write(f"\"{item['Location']}\"|")
+                    
+                if 'Country' not in item or item['Country'] is None:
+                    user_file.write("NULL")
+                else:
+                    user_file.write(f"\"{item['Country']}\"")
+                
+                user_file.write('\n')
+                
+                ## for Category table
+                for c in category:
+                    category_file.write(f"{ID}|")
+                    category_file.write(f"\"{formatStr(c)}\"")
+                    category_file.write("\n")
+                    
+                    
+                    
+                
+
+                
+                
 '''
                 for key in item.keys():
                     item_file.write(f"{key}|")

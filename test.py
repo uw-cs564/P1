@@ -1,15 +1,4 @@
-import enum
+user = {"UserID": "Glen", "Rating": "345", "Location": "Bay Area"}
 
-
-s = """hello 27\" rims 34" deep"""
-
-print(s)
-
-temp = ""
-for i, c in enumerate(s):
-    if c == '"':
-        temp += '""'
-    else:
-        temp += c
-
-print(temp)
+if "UserID" in user:
+    print('hello')
