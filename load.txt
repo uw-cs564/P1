@@ -1,14 +1,14 @@
 .separator |
 
-import Item.dat Item
+import Items.dat Item
 update Item set name = null where name = 'NULL';
 update Item set started = null where started = 'NULL';
 update Item set Ends = null where ends = 'NULL';
 update Item set Description = null where description = 'NULL';
 
-import Category.dat Category
+import Categorys.dat Category
 
-import Bid.dat Bid
+import Bids.dat Bid
 update Bid set Time = null where time = 'NULL';
 update Bid set Amount = null where amount = 'NULL';
 
