@@ -130,6 +130,9 @@ def parseJson(json_file):
             times1 = ""
             for item in items:
                 ID = item["ItemID"]
+                seller = item["Seller"]
+                sellerID = seller["UserID"]
+                bids = item["Bids"]
                 # looping through each item attributes
                 #TODO need a function to format all string values, will make life a lot easier
                 # add a quote in front of all instances of quotes in a string
@@ -142,6 +145,50 @@ def parseJson(json_file):
                 # since some keys dont exist 
                 item_file.write(f"\n")
 
+                if item['ItemID'] is None:
+                    item_file.write('NULL|')
+                else:
+                    item_file.write(f"{item['ItemID']}|")
+
+                if item['Name'] is None:
+                    item_file.write('NULL|')
+                else:
+                    item_file.write(f"\"{formatStr(item['Name'])}\"|")
+                   
+                if item['Currently'] is None:
+                    item_file.write('NULL')
+                else:
+                    item_file.write(f"{transformDollar(item['Currently'])}|")
+                    
+                if item['First_Bid'] is None:
+                    item_file.write('NULL')
+                else:
+                    item_file.write(f"{transformDollar(item['First_Bid'])}|")
+                   
+                if item['Number_of_Bids'] is None:
+                    item_file.write('NULL')
+                else:
+                    item_file.write(f"{item['Number_of_Bids']}|")
+                    
+                if item['Started'] is None:
+                    item_file.write('NULL')
+                else:
+                    item_file.write(f"{transformDttm(item['Started'])}|")
+                    
+                if item['Ends'] is None:
+                    item_file.write('NULL')
+                else:
+                    item_file.write(f"{transformDttm(item['Ends'])}|")
+                    
+                item_file.write(f"\"{sellerID}\"|")
+                    
+                if item['Description'] is None:
+                    item_file.write('NULL')
+                else:
+                    item_file.write(f"\"{formatStr(item['Description'])}\"|")
+                
+                item_file.write("\n")
+'''
                 for key in item.keys():
                     item_file.write(f"{key}|")
                     
@@ -200,8 +247,7 @@ def parseJson(json_file):
                         insert = f"\"{item[key]}\""
                        
                     item_file.write(f"{key}: {insert}| ")
-                    
-                item_file.write("\n")
+                  '''  
                
 
 def main(argv):
