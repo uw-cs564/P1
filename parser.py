@@ -135,16 +135,6 @@ def parseJson(json_file):
                 bids = item["Bids"]
                 category = item['Category'] # array of categories
                 
-                # looping through each item attributes
-                #TODO need a function to format all string values, will make life a lot easier
-                # add a quote in front of all instances of quotes in a string
-                
-                #TODO Check if None, turn into "NULL"
-                
-                #TODO if bids is empty, num of bids = NULL
-                
-                #TODO must cycle through a predetemined list of keys,
-                # since some keys dont exist 
 
                 if ID is None:
                     item_file.write('NULL|')
@@ -259,7 +249,8 @@ def parseJson(json_file):
                 user_file.write('\n')
                 
                 ## for Category table
-                for c in category:
+                # Remove duplicate categories for a given item
+                for c in list(set(category)):
                     category_file.write(f"{ID}|")
                     category_file.write(f"\"{formatStr(c)}\"")
                     category_file.write("\n")
