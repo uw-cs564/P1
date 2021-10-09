@@ -2,10 +2,6 @@
 
 import Item.dat Item
 update Item set name = null where name = 'NULL';
-update Item set Currently = null where currently = 'NULL';
-update Item set FirstBid = null where First_Bid = 'NULL';
-update Item set Location = null where location = 'NULL';
-update Item set Country = null where country = 'NULL';
 update Item set started = null where started = 'NULL';
 update Item set Ends = null where ends = 'NULL';
 update Item set Description = null where description = 'NULL';
