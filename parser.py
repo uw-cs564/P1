@@ -228,12 +228,12 @@ def parseJson(json_file):
                         if 'Location' not in bidder or bidder['Location'] is None:
                             user_file.write("NULL")
                         else:
-                            user_file.write(f"\"{bidder['Location']}\"|")
+                            user_file.write(f"\"{formatStr(bidder['Location'])}\"|")
                             
                         if 'Country' not in bidder or bidder['Country'] is None:
                             user_file.write("NULL")
                         else:
-                            user_file.write(f"\"{bidder['Country']}\"")
+                            user_file.write(f"\"{formatStr(bidder['Country'])}\"")
                             
                         bid_file.write('\n')
                         user_file.write('\n')
@@ -249,12 +249,12 @@ def parseJson(json_file):
                 if 'Location' not in item or item['Location'] is None:
                     user_file.write("NULL")
                 else:
-                    user_file.write(f"\"{item['Location']}\"|")
+                    user_file.write(f"\"{formatStr(item['Location'])}\"|")
                     
                 if 'Country' not in item or item['Country'] is None:
                     user_file.write("NULL")
                 else:
-                    user_file.write(f"\"{item['Country']}\"")
+                    user_file.write(f"\"{formatStr(item['Country'])}\"")
                 
                 user_file.write('\n')
                 

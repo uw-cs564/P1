@@ -1,0 +1,40 @@
+DROP TABLE IF EXISTS Item;
+DROP TABLE IF EXISTS Bid;
+DROP TABLE IF EXISTS Category;
+DROP TABLE IF EXISTS Users;
+
+CREATE TABLE IF NOT EXISTS Item (
+    ID INTEGER primary key autoincrement,
+    Name VARCHAR(32) DEFAULT NULL,
+    Currently INTEGER DEFAULT 0,
+    First_Bid INTEGER DEFAULT 0,
+    Number_Of_Bids INTEGER DEFAULT 0,
+    Started DATETIME  DEFAULT NULL,
+    Ends DATETIME DEFAULT NULL,
+    Seller_ID INTEGER DEFAULT 0,
+    Description text DEFAULT NULL,
+    FOREIGN KEY (Seller_ID) REFERENCES Users(ID)   
+);
+
+CREATE TABLE IF NOT EXISTS Bid (
+    Item_ID INTEGER primary key autoincrement,
+    Bidder_ID INTEGER DEFAULT 0,
+    DATETIME VARCHAR(32) DEFAULT NULL,
+    Amount VARCHAR(32) DEFAULT NULL,
+    FOREIGN KEY (Bidder_ID) REFERENCES Users(ID)
+);
+
+CREATE TABLE IF NOT EXISTS Category (
+    Item_ID INTEGER,
+    Category_Name VARCHAR(32) DEFAULT NULL,
+    PRIMARY KEY (Item_ID, Category_Name),
+    FOREIGN KEY (Item_ID) REFERENCES Item(ID)
+);
+
+CREATE TABLE IF NOT EXISTS Users (
+    ID INTEGER primary key autoincrement,
+    Rating INTEGER DEFAULT 0,
+    Location text DEFAULT NULL,
+    Country_Code INTEGER DEFAULT NULL
+);
+
