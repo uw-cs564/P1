@@ -1,4 +1,4 @@
-SELECT DISTINCT COUNT(Category_Name) 
+SELECT COUNT(DISTINCT Category_Name) 
 FROM Category
 WHERE ItemID IN (SELECT DISTINCT Bid.ItemID 
     FROM Bid
