@@ -1,3 +1,3 @@
-SELECT ID, MAX(currently) as highestCurr 
+SELECT ItemID
 FROM Item 
-WHERE currently = highestCurr;
+WHERE (SELECT MAX(CURRENTLY) FROM Item) = Currently;

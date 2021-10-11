@@ -1,1 +1,6 @@
-fourCat AS (SELECT itemID, COUNT(*) as numCat FROM Category WHERE numCat = 4), SELECT COUNT(*) FROM fourCat;
+WITH fourCat AS (
+SELECT ItemID, COUNT(Category_Name) AS numCat 
+FROM Category 
+GROUP BY ItemID
+HAVING numCat = 4)
+SELECT COUNT(*) FROM fourCat;

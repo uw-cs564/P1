@@ -1,5 +1,3 @@
-Sellers AS 
-    (SELECT Rating 
+    SELECT COUNT(*) FROM (SELECT DISTINCT Users.UserID, Users.Rating
     FROM Users,Item 
-    WHERE Users.ID = Item.Seller_ID GROUP BY Item.Seller_ID), 
-SELECT COUNT(*) FROM Sellers WHERE Rating > 1000;
+    WHERE Users.UserID = Item.SellerID) WHERE Rating > 1000;

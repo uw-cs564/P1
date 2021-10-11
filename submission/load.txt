@@ -9,7 +9,7 @@ update Item set Description = null where description = 'NULL';
 .import category.dat Category
 
 .import bids.dat Bid
-update Bid set Time = null where time = 'NULL';
+update Bid set BidTime = null where time = 'NULL';
 update Bid set Amount = null where amount = 'NULL';
 
 .import users.dat Users
